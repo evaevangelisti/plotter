@@ -1,3 +1,3 @@
 # Plotter
 
-A package for plotting data with Matplotlib.
+A Python package for consistent Matplotlib plots
