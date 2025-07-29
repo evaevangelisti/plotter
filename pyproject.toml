@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=80.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plotter"
+version = "0.1.0"
+description = "A package for plotting data with Matplotlib"
+readme = "README.md"
+requires-python = ">= 3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Eva", email = "eva.evangelisti03@gmail.com" }]
+dependencies = ["numpy>=2.2.6", "matplotlib>=3.10.3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4.1", "black>=25.1.0", "isort>=6.0.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
