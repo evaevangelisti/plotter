@@ -20,10 +20,9 @@ def test_lineplot():
     lines: list[Line2D] = plot._ax.get_lines()
     assert len(lines) == 1
 
-    line: Line2D = lines[0]
-    np.testing.assert_array_equal(line.get_xdata(), x)
-    np.testing.assert_array_equal(line.get_ydata(), y)
-    assert line.get_label() == "Quadratic"
+    np.testing.assert_array_equal(lines[0].get_xdata(), x)
+    np.testing.assert_array_equal(lines[0].get_ydata(), y)
+    assert lines[0].get_label() == "Quadratic"
 
     assert plot._ax.get_title() == "Test"
     assert plot._ax.get_xlabel() == "X"

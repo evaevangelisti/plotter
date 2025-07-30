@@ -9,12 +9,12 @@ from matplotlib.axes import Axes
 
 class Plot(ABC):
     """
-    Abstract class for Matplotlib plots.
+    Abstract base class for creating plots.
     """
 
     def __init__(
         self,
-        figsize: tuple[float, float] = (8, 5),
+        figsize: tuple[float, float] = (6.4, 4.8),
         title: str = "",
         xlabel: str = "",
         ylabel: str = "",
@@ -126,7 +126,7 @@ class Plot(ABC):
         Saves the plot to the specified output path.
 
         Args:
-            output_path (str | Path): Path to save the plot.
+            output_path (str | Path): Output path.
         """
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         self._fig.savefig(Path(output_path))
@@ -134,7 +134,7 @@ class Plot(ABC):
 
 class LinePlot(Plot):
     """
-    A class for creating line plots using Matplotlib.
+    Class for creating a line plot.
     """
 
     def __init__(
@@ -146,7 +146,7 @@ class LinePlot(Plot):
         **kwargs: Any,
     ):
         """
-        Initializes a line plot with the given data.
+        Initializes a line plot.
 
         Args:
             x (np.ndarray): X-axis data.
