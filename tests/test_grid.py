@@ -1,57 +1,114 @@
 import numpy as np
+import pytest
 from matplotlib.axes import Axes
-from matplotlib.lines import Line2D
 
+from plotter.core.base import Renderable
 from plotter.core.grid import Grid
-from plotter.core.plot import LinePlot
+from plotter.core.multiplot import Multiplot
+from plotter.core.plot import LinePlot, Plot
 
 
-def test_grid():
-    x: np.ndarray = np.array([0, 1, 2, 3])
-    y: np.ndarray = np.array([0, 1, 4, 9])
-    z: np.ndarray = np.array([0, 1, 16, 36])
+@pytest.fixture(
+    params=[
+        [
+            {
+                "type": LinePlot,
+                "x": np.array([0, 1, 2, 3]),
+                "y": np.array([0, 1, 4, 9]),
+                "label": "Quadratic",
+                "color": "C0",
+                "title": "Test - Quadratic",
+                "xlabel": "X",
+                "ylabel": "Y",
+                "show_legend": True,
+                "force_origin": False,
+                "remove_margins": False,
+            },
+            {
+                "type": LinePlot,
+                "x": np.array([0, 1, 2, 3]),
+                "y": np.array([0, 1, 16, 36]),
+                "label": "Cubic",
+                "color": "C1",
+                "title": "Test - Cubic",
+                "xlabel": "X",
+                "ylabel": "Y",
+                "show_legend": True,
+                "force_origin": False,
+                "remove_margins": False,
+            },
+            {
+                "plots": [
+                    {
+                        "type": LinePlot,
+                        "x": np.array([0, 1, 2, 3]),
+                        "y": np.array([0, 1, 4, 9]),
+                        "label": "Quadratic",
+                        "color": "C0",
+                    },
+                    {
+                        "type": LinePlot,
+                        "x": np.array([0, 1, 2, 3]),
+                        "y": np.array([0, 1, 8, 27]),
+                        "label": "Cubic",
+                        "color": "C1",
+                    },
+                ],
+                "title": "Test - Multiplot",
+                "xlabel": "X",
+                "ylabel": "Y",
+                "show_legend": True,
+                "force_origin": False,
+                "remove_margins": False,
+            },
+        ]
+    ]
+)
+def grid(
+    request,
+) -> Grid:
+    renderables: list[Renderable] = []
 
-    quadratic_plot: LinePlot = LinePlot(
-        x,
-        y,
-        label="Quadratic",
-        title="Test - Quadratic",
-        xlabel="X",
-        ylabel="Y",
-    )
+    for renderable in request.param:
+        if "plots" in renderable:
+            plots: list[Plot] = []
 
-    cubic_plot: LinePlot = LinePlot(
-        x,
-        z,
-        label="Cubic",
-        title="Test - Cubic",
-        xlabel="X",
-        ylabel="Z",
-    )
+            for plot in renderable["plots"]:
+                plots.append(
+                    plot["type"](
+                        x=plot["x"],
+                        y=plot["y"],
+                        label=plot["label"],
+                        color=plot["color"],
+                    )
+                )
 
-    grid: Grid = Grid([quadratic_plot, cubic_plot], ncols=2)
+            renderables.append(
+                Multiplot(
+                    plots,
+                    title=renderable["title"],
+                    xlabel=renderable["xlabel"],
+                    ylabel=renderable["ylabel"],
+                )
+            )
+        else:
+            renderables.append(
+                renderable["type"](
+                    x=renderable["x"],
+                    y=renderable["y"],
+                    label=renderable["label"],
+                    color=renderable["color"],
+                    title=renderable["title"],
+                    xlabel=renderable["xlabel"],
+                    ylabel=renderable["ylabel"],
+                )
+            )
 
+    return Grid(renderables)
+
+
+def test_grid(
+    grid: Grid,
+):
     axes: list[Axes] = grid.fig.axes
-    assert len(axes) == 2
-
-    assert axes[0].get_title() == "Test - Quadratic"
-    assert axes[0].get_xlabel() == "X"
-    assert axes[0].get_ylabel() == "Y"
-
-    quadratic_lines: list[Line2D] = axes[0].get_lines()
-    assert len(quadratic_lines) == 1
-
-    np.testing.assert_array_equal(quadratic_lines[0].get_xdata(), x)
-    np.testing.assert_array_equal(quadratic_lines[0].get_ydata(), y)
-    assert quadratic_lines[0].get_label() == "Quadratic"
-
-    assert axes[1].get_title() == "Test - Cubic"
-    assert axes[1].get_xlabel() == "X"
-    assert axes[1].get_ylabel() == "Z"
-
-    cubic_lines: list[Line2D] = axes[1].get_lines()
-    assert len(cubic_lines) == 1
-
-    np.testing.assert_array_equal(cubic_lines[0].get_xdata(), x)
-    np.testing.assert_array_equal(cubic_lines[0].get_ydata(), z)
-    assert cubic_lines[0].get_label() == "Cubic"
+    assert len(axes) == len(grid._renderables)

@@ -34,6 +34,8 @@ DEFAULT_RC: dict[str, Any] = {
     "ps.fonttype": 42,
 }
 
+DEFAULT_FIGSIZE: tuple[float, float] = (6.4, 4.8)
+
 
 def get_style() -> mpl.RcParams:
     """

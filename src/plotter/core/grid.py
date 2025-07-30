@@ -1,42 +1,38 @@
-import matplotlib.pyplot as plt
-
-from plotter.core.drawable import Drawable
-from plotter.core.plot import Plot
+from plotter.core.base import Exportable, Renderable
+from plotter.style import DEFAULT_FIGSIZE
 
 
-class Grid(Drawable):
+class Grid(Exportable):
     """
-    Class for creating a grid of plots.
+    Class for creating a grid of renderables.
     """
 
     def __init__(
         self,
-        plots: list[Plot],
+        renderables: list[Renderable],
         ncols: int = 3,
         figsize: tuple[float, float] | None = None,
     ):
         """
-        Initializes a grid of plots.
+        Initializes a grid of renderables.
 
         Args:
-            plots (list[Plot]): List of Plot objects.
+            renderables (list[Renderable]): List of Renderable objects.
             ncols (int): Number of columns in the grid.
             figsize (tuple[float, float] | None): Figure size in inches.
         """
-        self._fig, axes = plt.subplots(
-            nrows := (len(plots) + ncols - 1) // ncols,
-            ncols,
-            figsize=figsize or (6.4 * ncols, 4.8 * nrows),
+        super().__init__(
+            nrows=(nrows := (len(renderables) + ncols - 1) // ncols),
+            ncols=ncols,
+            figsize=figsize or (DEFAULT_FIGSIZE[0] * ncols, DEFAULT_FIGSIZE[1] * nrows),
         )
 
-        axes = axes.flat if hasattr(axes, "flat") else [axes]
+        self._renderables = renderables
 
-        for plot, ax in zip(plots, axes):
-            plot.render(ax)
+        for renderable, ax in zip(self._renderables, self.axes):
+            renderable.render(ax)
 
-        for ax in axes[len(plots) :]:
+        for ax in self.axes[len(self._renderables) :]:
             ax.set_visible(False)
 
-        plt.tight_layout()
-
-        super().__init__(self._fig)
+        self.finalize()
