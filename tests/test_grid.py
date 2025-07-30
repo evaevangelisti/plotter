@@ -31,8 +31,12 @@ def test_grid():
 
     grid: Grid = Grid([quadratic_plot, cubic_plot], ncols=2)
 
-    axes: list[Axes] = grid._fig.axes
+    axes: list[Axes] = grid.fig.axes
     assert len(axes) == 2
+
+    assert axes[0].get_title() == "Test - Quadratic"
+    assert axes[0].get_xlabel() == "X"
+    assert axes[0].get_ylabel() == "Y"
 
     quadratic_lines: list[Line2D] = axes[0].get_lines()
     assert len(quadratic_lines) == 1
@@ -41,9 +45,9 @@ def test_grid():
     np.testing.assert_array_equal(quadratic_lines[0].get_ydata(), y)
     assert quadratic_lines[0].get_label() == "Quadratic"
 
-    assert axes[0].get_title() == "Test - Quadratic"
-    assert axes[0].get_xlabel() == "X"
-    assert axes[0].get_ylabel() == "Y"
+    assert axes[1].get_title() == "Test - Cubic"
+    assert axes[1].get_xlabel() == "X"
+    assert axes[1].get_ylabel() == "Z"
 
     cubic_lines: list[Line2D] = axes[1].get_lines()
     assert len(cubic_lines) == 1
@@ -51,7 +55,3 @@ def test_grid():
     np.testing.assert_array_equal(cubic_lines[0].get_xdata(), x)
     np.testing.assert_array_equal(cubic_lines[0].get_ydata(), z)
     assert cubic_lines[0].get_label() == "Cubic"
-
-    assert axes[1].get_title() == "Test - Cubic"
-    assert axes[1].get_xlabel() == "X"
-    assert axes[1].get_ylabel() == "Z"

@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.axes import Axes
 
+from plotter.core.drawable import Drawable
+from plotter.utils import _format_axes
 
-class Plot(ABC):
+
+class Plot(Drawable, ABC):
     """
     Abstract base class for creating plots.
     """
@@ -18,118 +20,69 @@ class Plot(ABC):
         title: str = "",
         xlabel: str = "",
         ylabel: str = "",
-        force_origin: bool = True,
-        remove_margins: bool = True,
+        show_legend: bool = True,
+        force_origin: bool = False,
+        remove_margins: bool = False,
     ):
         """
-        Initializes the plot with common parameters.
+        Initializes a plot.
 
         Args:
             figsize (tuple[float, float]): Figure size in inches.
-            title (str | None): Plot title.
-            xlabel (str | None): X-axis label.
-            ylabel (str | None): Y-axis label.
-            force_origin (bool): Whather to force axes to start at zero.
+            title (str): Plot title.
+            xlabel (str): X-axis label.
+            ylabel (str): Y-axis label.
+            show_legend (bool): Whether to show the legend.
+            force_origin (bool): Whether to force axes to start at zero.
             remove_margins (bool): Whether to remove margins around the plot.
         """
         self._title: str = title
         self._xlabel: str = xlabel
         self._ylabel: str = ylabel
+        self._show_legend: bool = show_legend
         self._force_origin: bool = force_origin
         self._remove_margins: bool = remove_margins
 
-        self._fig, self._ax = plt.subplots(figsize=figsize)
-        self._plot(self._ax)
-        self._format(self._ax)
+        self._fig, ax = plt.subplots(figsize=figsize)
+        self.render(ax)
+
         plt.tight_layout()
 
+        super().__init__(self._fig)
+
     @abstractmethod
-    def _plot(
+    def draw(
         self,
         ax: Axes,
     ) -> None:
         """
-        Abstract method to plot data on the given axes.
+        Abstract method to draw the plot on the given axes.
 
         Args:
             ax (Axes): Axes object.
         """
         pass
 
-    def _format(
+    def render(
         self,
         ax: Axes,
     ) -> None:
         """
-        Applies standard formatting to the axes.
+        Renders the plot on the given axes.
 
         Args:
             ax (Axes): Axes object.
         """
-        ax.set_title(self._title)
-        ax.set_xlabel(self._xlabel)
-        ax.set_ylabel(self._ylabel)
-
-        ax.minorticks_on()
-        ax.tick_params(
-            which="both",
-            direction="in",
-            bottom=True,
-            top=True,
-            left=True,
-            right=True,
+        self.draw(ax)
+        _format_axes(
+            ax,
+            title=self._title,
+            xlabel=self._xlabel,
+            ylabel=self._ylabel,
+            show_legend=self._show_legend,
+            force_origin=self._force_origin,
+            remove_margins=self._remove_margins,
         )
-
-        _, labels = ax.get_legend_handles_labels()
-        if labels and any(labels):
-            ax.legend()
-
-        if self._force_origin:
-            ax.set_xlim(left=0)
-            ax.set_ylim(bottom=0)
-
-        if self._remove_margins:
-            ax.margins(x=0, y=0)
-
-    def draw(
-        self,
-        ax: Axes,
-    ) -> Axes:
-        """
-        Draws the plot on the given axes.
-
-        Args:
-            ax (Axes): Axes object.
-
-        Returns:
-            Axes: Modifided axes object.
-        """
-        self._plot(ax)
-        self._format(ax)
-
-        return ax
-
-    def show(
-        self,
-    ) -> None:
-        """
-        Shows the plot.
-        """
-        self._fig.show()
-        plt.close(self._fig)
-
-    def save(
-        self,
-        output_path: str | Path,
-    ) -> None:
-        """
-        Saves the plot to the specified output path.
-
-        Args:
-            output_path (str | Path): Output path.
-        """
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        self._fig.savefig(Path(output_path))
 
 
 class LinePlot(Plot):
@@ -162,12 +115,12 @@ class LinePlot(Plot):
 
         super().__init__(**kwargs)
 
-    def _plot(
+    def draw(
         self,
         ax: Axes,
     ) -> None:
         """
-        Plots the line on the given axes.
+        Draws the plot on the given axes.
 
         Args:
             ax (Axes): Axes object.
