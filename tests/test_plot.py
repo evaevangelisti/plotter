@@ -12,7 +12,6 @@ from plotter import LinePlot
             "x": np.array([0, 1, 2, 3]),
             "y": np.array([0, 1, 4, 9]),
             "label": "Quadratic",
-            "color": "C0",
             "title": "Test - Quadratic",
             "xlabel": "X",
             "ylabel": "Y",
@@ -24,7 +23,6 @@ from plotter import LinePlot
             "x": np.array([0, 1, 2, 3]),
             "y": np.array([0, 1, 16, 36]),
             "label": "Cubic",
-            "color": "C1",
             "title": "Test - Cubic",
             "xlabel": "X",
             "ylabel": "Y",
@@ -41,7 +39,6 @@ def line_plot(
         x=request.param["x"],
         y=request.param["y"],
         label=request.param["label"],
-        color=request.param["color"],
         title=request.param["title"],
         xlabel=request.param["xlabel"],
         ylabel=request.param["ylabel"],
@@ -63,4 +60,4 @@ def test_lineplot(
 
     np.testing.assert_array_equal(lines[0].get_xdata(), line_plot._x)
     np.testing.assert_array_equal(lines[0].get_ydata(), line_plot._y)
-    assert lines[0].get_label() == line_plot._label
+    assert lines[0].get_label() == line_plot._kwargs["label"]

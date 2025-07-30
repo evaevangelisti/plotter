@@ -15,7 +15,6 @@ from plotter.plot import Plot
                 "x": np.array([0, 1, 2, 3]),
                 "y": np.array([0, 1, 4, 9]),
                 "label": "Quadratic",
-                "color": "C0",
                 "title": "Test - Quadratic",
                 "xlabel": "X",
                 "ylabel": "Y",
@@ -28,7 +27,6 @@ from plotter.plot import Plot
                 "x": np.array([0, 1, 2, 3]),
                 "y": np.array([0, 1, 16, 36]),
                 "label": "Cubic",
-                "color": "C1",
                 "title": "Test - Cubic",
                 "xlabel": "X",
                 "ylabel": "Y",
@@ -43,14 +41,12 @@ from plotter.plot import Plot
                         "x": np.array([0, 1, 2, 3]),
                         "y": np.array([0, 1, 4, 9]),
                         "label": "Quadratic",
-                        "color": "C0",
                     },
                     {
                         "type": LinePlot,
                         "x": np.array([0, 1, 2, 3]),
                         "y": np.array([0, 1, 8, 27]),
                         "label": "Cubic",
-                        "color": "C1",
                     },
                 ],
                 "title": "Test - Multiplot",
@@ -78,7 +74,6 @@ def grid(
                         x=plot["x"],
                         y=plot["y"],
                         label=plot["label"],
-                        color=plot["color"],
                     )
                 )
 
@@ -96,7 +91,6 @@ def grid(
                     x=renderable["x"],
                     y=renderable["y"],
                     label=renderable["label"],
-                    color=renderable["color"],
                     title=renderable["title"],
                     xlabel=renderable["xlabel"],
                     ylabel=renderable["ylabel"],

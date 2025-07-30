@@ -64,8 +64,6 @@ class LinePlot(Plot):
         self,
         x: np.ndarray,
         y: np.ndarray,
-        label: str = "",
-        color: str = "C0",
         figsize: tuple[float, float] = DEFAULT_FIGSIZE,
         title: str = "",
         xlabel: str = "",
@@ -73,6 +71,7 @@ class LinePlot(Plot):
         show_legend: bool = True,
         force_origin: bool = False,
         remove_margins: bool = False,
+        **kwargs: Any,
     ):
         """
         Initializes a line plot.
@@ -80,8 +79,6 @@ class LinePlot(Plot):
         Args:
             x (np.ndarray): X-axis data.
             y (np.ndarray): Y-axis data.
-            label (str): Label for the line.
-            color (str): Color of the line.
             figsize (tuple[float, float]): Figure size in inches.
             title (str): Plot title.
             xlabel (str): X-axis label.
@@ -89,11 +86,11 @@ class LinePlot(Plot):
             show_legend (bool): Whether to show the legend.
             force_origin (bool): Whether to force axes to start at zero.
             remove_margins (bool): Whether to remove margins around the plot.
+            **kwargs (Any): Additional keyword arguments for the plot.
         """
         self._x: np.ndarray = x
         self._y: np.ndarray = y
-        self._label: str = label
-        self._color: str = color
+        self._kwargs: Any = kwargs
 
         super().__init__(
             figsize=figsize,
@@ -118,6 +115,5 @@ class LinePlot(Plot):
         ax.plot(
             self._x,
             self._y,
-            label=self._label,
-            color=self._color,
+            **self._kwargs,
         )

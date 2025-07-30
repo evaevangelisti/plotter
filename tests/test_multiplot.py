@@ -16,7 +16,6 @@ from plotter.plot import Plot
                     "x": np.array([0, 1, 2, 3]),
                     "y": np.array([0, 1, 4, 9]),
                     "label": "Quadratic",
-                    "color": "C0",
                 },
             ],
             "title": "Test - Single Multiplot",
@@ -33,14 +32,12 @@ from plotter.plot import Plot
                     "x": np.array([0, 1, 2, 3]),
                     "y": np.array([0, 1, 4, 9]),
                     "label": "Quadratic",
-                    "color": "C0",
                 },
                 {
                     "type": LinePlot,
                     "x": np.array([0, 1, 2, 3]),
                     "y": np.array([0, 1, 8, 27]),
                     "label": "Cubic",
-                    "color": "C1",
                 },
             ],
             "title": "Test - Multiplot",
@@ -63,7 +60,6 @@ def multiplot(
                 x=plot["x"],
                 y=plot["y"],
                 label=plot["label"],
-                color=plot["color"],
             )
         )
 
