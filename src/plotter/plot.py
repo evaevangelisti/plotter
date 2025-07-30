@@ -4,8 +4,8 @@ from typing import Any
 import numpy as np
 from matplotlib.axes import Axes
 
-from plotter.core.base import Renderable
-from plotter.style import DEFAULT_FIGSIZE
+from .base import Renderable
+from .style import DEFAULT_FIGSIZE
 
 
 class Plot(Renderable, ABC):

@@ -3,8 +3,8 @@ import pytest
 from matplotlib.axes import Axes
 from matplotlib.lines import Line2D
 
-from plotter.core.multiplot import Multiplot
-from plotter.core.plot import LinePlot, Plot
+from plotter import LinePlot, Multiplot
+from plotter.plot import Plot
 
 
 @pytest.fixture(

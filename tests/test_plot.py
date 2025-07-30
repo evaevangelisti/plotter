@@ -3,7 +3,7 @@ import pytest
 from matplotlib.axes import Axes
 from matplotlib.lines import Line2D
 
-from plotter.core.plot import LinePlot
+from plotter import LinePlot
 
 
 @pytest.fixture(

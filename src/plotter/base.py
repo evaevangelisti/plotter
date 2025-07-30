@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from plotter.style import DEFAULT_FIGSIZE
+from .style import DEFAULT_FIGSIZE
 
 
 class Exportable(ABC):

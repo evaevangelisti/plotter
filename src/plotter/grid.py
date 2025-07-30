@@ -1,5 +1,5 @@
-from plotter.core.base import Exportable, Renderable
-from plotter.style import DEFAULT_FIGSIZE
+from .base import Exportable, Renderable
+from .style import DEFAULT_FIGSIZE
 
 
 class Grid(Exportable):

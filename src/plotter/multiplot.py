@@ -2,9 +2,9 @@ from typing import Any
 
 from matplotlib.axes import Axes
 
-from plotter.core.base import Renderable
-from plotter.core.plot import Plot
-from plotter.style import DEFAULT_FIGSIZE
+from .base import Renderable
+from .plot import Plot
+from .style import DEFAULT_FIGSIZE
 
 
 class Multiplot(Renderable):

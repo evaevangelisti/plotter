@@ -2,10 +2,9 @@ import numpy as np
 import pytest
 from matplotlib.axes import Axes
 
-from plotter.core.base import Renderable
-from plotter.core.grid import Grid
-from plotter.core.multiplot import Multiplot
-from plotter.core.plot import LinePlot, Plot
+from plotter import Grid, LinePlot, Multiplot
+from plotter.base import Renderable
+from plotter.plot import Plot
 
 
 @pytest.fixture(
