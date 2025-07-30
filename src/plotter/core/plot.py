@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib.axes import Axes
 
 from plotter.core.base import Renderable
+from plotter.style import DEFAULT_FIGSIZE
 
 
 class Plot(Renderable, ABC):
@@ -20,7 +21,7 @@ class Plot(Renderable, ABC):
         Initializes a plot.
 
         Args:
-            **kwargs (Any): Additional keyword arguments for the plot.
+            **kwargs (Any): Keyword arguments forwarded to Renderable.
         """
         super().__init__(**kwargs)
 
@@ -65,7 +66,13 @@ class LinePlot(Plot):
         y: np.ndarray,
         label: str = "",
         color: str = "C0",
-        **kwargs: Any,
+        figsize: tuple[float, float] = DEFAULT_FIGSIZE,
+        title: str = "",
+        xlabel: str = "",
+        ylabel: str = "",
+        show_legend: bool = True,
+        force_origin: bool = False,
+        remove_margins: bool = False,
     ):
         """
         Initializes a line plot.
@@ -75,14 +82,28 @@ class LinePlot(Plot):
             y (np.ndarray): Y-axis data.
             label (str): Label for the line.
             color (str): Color of the line.
-            **kwargs (Any): Additional keyword arguments for the line plot.
+            figsize (tuple[float, float]): Figure size in inches.
+            title (str): Plot title.
+            xlabel (str): X-axis label.
+            ylabel (str): Y-axis label.
+            show_legend (bool): Whether to show the legend.
+            force_origin (bool): Whether to force axes to start at zero.
+            remove_margins (bool): Whether to remove margins around the plot.
         """
         self._x: np.ndarray = x
         self._y: np.ndarray = y
         self._label: str = label
         self._color: str = color
 
-        super().__init__(**kwargs)
+        super().__init__(
+            figsize=figsize,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            show_legend=show_legend,
+            force_origin=force_origin,
+            remove_margins=remove_margins,
+        )
 
     def draw(
         self,
